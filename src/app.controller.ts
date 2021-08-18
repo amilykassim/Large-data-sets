@@ -1,106 +1,54 @@
-import { Controller, Get, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Controller, Get, Post, Res, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { AppService } from './app.service';
-import { UserDTO } from './dtos/user.dto';
-// Requiring the module
-const reader = require('xlsx');
-const Joi = require('joi');
-const excel = require('excel4node');
+import { UserValidation } from './validation/user.validation';
 
 @Controller('/api/v1')
 export class AppController {
-  private users = [];
-  constructor(private readonly appService: AppService) { }
+  private validatedUsers = [];
+
+  constructor(
+    private readonly appService: AppService,
+  ) { }
+
+  @Get('/users')
+  async getUncommittedUsers(@Res() res) {
+    const users = await this.validatedUsers;
+
+    return res.status(200).json({ code: 200, data: users });
+  }
+
+  @Get('/users/committed')
+  async getCommittedUsers(@Res() res) {
+    const users = await this.appService.findAll();
+
+    return res.status(200).json({ code: 200, data: users });
+  }
 
   @Post('/upload')
   @UseInterceptors(FileInterceptor('file'))
-  uploadFile(@UploadedFile() file: Express.Multer.File) {
-    // parse buffer to JSON
-    this.users = this.parseBufferToJSON(file);
+  async uploadFileOfUsers(@UploadedFile(UserValidation) request: Express.Multer.File, @Res() res) {
+    // add validated results to the validated users array
+    this.validatedUsers = request['users'];
 
-    this.convertPhoneNumberToString(this.users);
+    // if data is invalid
+    if (!request['isDataValid']) return res.status(200).json({ code: 200, message: 'There are invalid data' });
 
-    // validate the users data
-    this.users.forEach(user => {
-      const { error } = this.validate(user);
-      if (error) user['errors'] = error.message;
-    });
-
-
-    return 'Valid data';
-  }
-
-  validate(data) {
-    const schema = Joi.object({
-      name: Joi.string().min(1).max(50).required(),
-      nid: Joi.string().length(16).pattern(/^[0-9]+$/).required(),
-      phone: Joi.string().length(12).pattern(/^[0-9]+$/).required().required(),
-      gender: Joi.string().valid("M", "F"),
-      email: Joi.string().email().required(),
-    });
-
-    return schema.validate(data);
-  }
-
-  convertPhoneNumberToString(users) {
-    users.forEach(user => {
-      user['phone'] = user['phone'].toString();
-    });
-  };
-
-  @Get('/users')
-  getUsers() {
-    return this.users;
-  }
-
-  @Get('/allUsers')
-  getAllUsers() {
-    return this.appService.findAll();
+    // if the data is valid
+    return res.status(200).json({ code: 200, message: 'All data are valid' });
   }
 
   @Post('/users')
-  createUser() {
-    // const data: UserDTO = {
-    //   nid: "1199880000270041",
-    //   name: 'amily',
-    //   phone: '250782228870',
-    //   gender: "M",
-    //   email: "amily@gmail.com"
-    // };
-
-
-    console.log('Started saving data to database....');
-    this.users.forEach(async (user) => {
-      await this.appService.createUser(user);
+  async commitUsersToDB(@Res() res) {
+    // Commit each record on the db
+    this.validatedUsers.forEach(async (user) => {
+      try {
+        await this.appService.createUser(user);
+      } catch (error) {
+        console.error(`An error occured while saving this ${JSON.stringify(user)} to DB, here is the reason: `, error);
+      }
     });
-    // this.appService.createUser(data);
 
-    console.log('Finished saving data to database....');
-  }
-
-  parseBufferToJSON(myFile: Express.Multer.File) {
-    const file = reader.read(myFile.buffer);
-    let data = []
-
-    const sheets = file.SheetNames
-    for (let i = 0; i < sheets.length; i++) {
-      const temp = reader.utils.sheet_to_json(
-        file.Sheets[file.SheetNames[i]])
-      temp.forEach((res) => {
-        data.push(res)
-      });
-    }
-
-    return data;
+    return res.status(200).json({ code: 200, message: 'Saved users successfully!' });
   }
 }
-
- // this.users = [
-    //   {
-    //     "nid": "1199880000270041",
-    //     "name": "",
-    //     "phone": 250782228,
-    //     "gender": "B",
-    //     "email": "amily@gmail.com"
-    //   },
-    // ];
