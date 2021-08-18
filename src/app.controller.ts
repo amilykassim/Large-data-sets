@@ -1,6 +1,7 @@
 import { Controller, Get, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { AppService } from './app.service';
+import { UserDTO } from './dtos/user.dto';
 // Requiring the module
 const reader = require('xlsx');
 const Joi = require('joi');
@@ -24,7 +25,7 @@ export class AppController {
       const { error } = this.validate(user);
       if (error) user['errors'] = error.message;
     });
-   
+
 
     return 'Valid data';
   }
@@ -50,6 +51,31 @@ export class AppController {
   @Get('/users')
   getUsers() {
     return this.users;
+  }
+
+  @Get('/allUsers')
+  getAllUsers() {
+    return this.appService.findAll();
+  }
+
+  @Post('/users')
+  createUser() {
+    // const data: UserDTO = {
+    //   nid: "1199880000270041",
+    //   name: 'amily',
+    //   phone: '250782228870',
+    //   gender: "M",
+    //   email: "amily@gmail.com"
+    // };
+
+
+    console.log('Started saving data to database....');
+    this.users.forEach(async (user) => {
+      await this.appService.createUser(user);
+    });
+    // this.appService.createUser(data);
+
+    console.log('Finished saving data to database....');
   }
 
   parseBufferToJSON(myFile: Express.Multer.File) {
