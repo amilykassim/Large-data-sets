@@ -2,7 +2,7 @@ import { Controller, Get, Post, Res, UploadedFile, UseGuards, UseInterceptors } 
 import { FileInterceptor } from '@nestjs/platform-express';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { UserService } from './user.service';
-import { UserValidation } from './user.validation';
+import { UserValidation } from './validations/user.validation';
 
 @Controller('/api/v1')
 export class UserController {

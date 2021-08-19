@@ -1,9 +1,9 @@
-import { Controller, Get, Post, Request, Res, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Request, Res, UseGuards } from '@nestjs/common';
 import { AppService } from './app.service';
 import { AuthService } from './auth/auth.service';
-import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
 import { LocalAuthGuard } from './auth/guards/local-auth.guard';
 import { UserService } from './user/user.service';
+import { RegisterUserValidation } from './user/validations/register-user.validation';
 
 @Controller()
 export class AppController {
@@ -27,12 +27,12 @@ export class AppController {
   }
 
   @Post('/auth/register')
-  async register(@Request() req, @Res() res) {
-    const data = req.body;
-    // const data = validateSignUp(args);
-    // if (data.error) throw new Error(data.error.details[0].message);
+  async register(@Body(RegisterUserValidation) request, @Res() res) {
+    const { error } = request;
+    if(error) return res.status(200).json({ code: 200, error: error.details[0].message});
 
     // check if username is unique
+    const data = request.value;
     let userFound = await this.userService.findByUsername(data.name);
     if (userFound) return res.status(200).json({ code: 400, message: 'That username is already taken, try something else' });
 
