@@ -1,6 +1,6 @@
 
 import { PipeTransform, Injectable, ArgumentMetadata } from '@nestjs/common';
-import { UserUtils } from 'src/utils/user.util';
+import { UserUtils } from 'src/user/user.util';
 const Joi = require('joi');
 
 @Injectable()

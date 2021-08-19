@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Res, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { AppService } from './app.service';
-import { UserValidation } from './validation/user.validation';
+import { AppService } from './user.service';
+import { UserValidation } from './user.validation';
 
 @Controller('/api/v1')
 export class AppController {
