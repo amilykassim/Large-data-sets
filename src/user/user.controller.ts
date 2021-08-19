@@ -23,13 +23,16 @@ export class UserController {
   @UseGuards(JwtAuthGuard)
   @Get('/users/committed')
   async getCommittedUsers(@Res() res) {
-    const users = await this.userService.findAll();
+    const results = await this.userService.findAll();
+
+    // remove password
+    const users = results.map(({ password, ...users}) => users);
 
     return res.status(200).json({ code: 200, data: users });
   }
 
-  // @UseGuards(JwtAuthGuard)
-  @Post('/upload')
+  @UseGuards(JwtAuthGuard)
+  @Post('/users/upload')
   @UseInterceptors(FileInterceptor('file'))
   async uploadFileOfUsers(@UploadedFile(UserValidation) request: Express.Multer.File, @Res() res) {
     // add validated results to the validated users array
@@ -42,7 +45,7 @@ export class UserController {
     return res.status(200).json({ code: 200, message: 'All data are valid' });
   }
 
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Post('/users')
   async commitUsersToDB(@Res() res) {
     // Commit each record on the db

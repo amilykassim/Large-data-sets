@@ -53,7 +53,7 @@ Authentication
 
 | Method | Endpoint     | Enable a user to: |
 | ------ | ------------ | -------------- |
-| POST   | /auth/signup | Register       |
+| POST   | /auth/register | Register       |
 | POST   | /auth/login  | Login          |
 
 User

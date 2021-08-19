@@ -27,6 +27,7 @@
     "@nestjs/passport": "^8.0.1",
     "@nestjs/platform-express": "^7.6.15",
     "@nestjs/typeorm": "^8.0.2",
+    "bcrypt": "^5.0.1",
     "bullmq": "^1.40.4",
     "dotenv": "^10.0.0",
     "excel4node": "^1.7.2",

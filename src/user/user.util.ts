@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 const reader = require('xlsx');
+const bcrypt = require('bcrypt');
 
 @Injectable()
 export class UserUtils {
@@ -26,5 +27,10 @@ export class UserUtils {
 
     // return the users array data
     return users;
+  }
+
+  async hashPassword(password) {
+    const salt = await bcrypt.genSalt(10);
+    return bcrypt.hash(password, salt);
   }
 }
