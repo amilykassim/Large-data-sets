@@ -1,6 +1,6 @@
 # CHALLENGE 1
 
-> This API helps you to upload a large number of data sets, validate the records and commit the changes to your DB
+> This API helps you to upload a large number of data sets, validate the records and commit the data to your DB
 
 ---
 
@@ -34,14 +34,13 @@
 4. Congratulations! You have successfully launched the Load Testing Bot.
 
 ## To check if the API is up and running.
-[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/e5aedfc69394a3b82064#?env%5Bdev-bare-foot%5D=W3sia2V5IjoidXJsIiwidmFsdWUiOiIxMjcuMC4wLjE6MzAwMC9hcGkvdjEvIiwiZW5hYmxlZCI6dHJ1ZX0seyJrZXkiOiJ0b2tlbiIsInZhbHVlIjpudWxsLCJlbmFibGVkIjp0cnVlfV0=) or view full documentation of the API can be found [here](https://technites-bn-backend-staging.herokuapp.com/api/v1/api-docs/)
-
 Run the application with `npm run start` and open an API testing tool. We will use Postman for this case.
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/)
 
 Just call this endpoint: http://localhost:3000 using a GET method
 It will return a `Hello World!` message.
 
-For testing endpoints, we'll use this versioned endpoint
+For testing other endpoints, we'll use this versioned endpoint
 
 ```
 http://localhost:3000/api/v1/<endpoint>
@@ -52,7 +51,7 @@ http://localhost:3000/api/v1/<endpoint>
 Authentication
 ------------- |
 
-| Method | EndPoint     | Enable a user: |
+| Method | Endpoint     | Enable a user to: |
 | ------ | ------------ | -------------- |
 | POST   | /auth/signup | Register       |
 | POST   | /auth/login  | Login          |
@@ -60,7 +59,7 @@ Authentication
 User
 ------------- |
 
-| Method | EndPoint         | Enable a user:                                      |
+| Method | Endpoint         | Enable a user to:                                      |
 | ------ | ---------------- | --------------------------------------------------- |
 | POST   | /users/upload    | Upload an excel file of users                       |
 | GET    | /users           | Get a list of the uploaded file of users            |
