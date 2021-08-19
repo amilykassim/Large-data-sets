@@ -1,73 +1,80 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo_text.svg" width="320" alt="Nest Logo" /></a>
-</p>
+# CHALLENGE 1
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+> This API helps you to upload a large number of data sets, validate the records and commit the changes to your DB
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+---
 
-## Description
+## Getting Started
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+1. git clone this repository && cd to the project directory
 
-## Installation
+## Pre-requisites
 
-```bash
-$ npm install
+- Node.js
+- Nest.js
+- Git
+- Postgres
+- VSCode or even any other code editor of your prefered choice.
+
+## Installing
+
+- Install [Node.js](https://nodejs.org/en/download/) if you dont have it installed.
+- Install [Nest.js](https://nestjs.com) if you dont have it installed.
+- Install [Postgres](https://www.postgresql.org) if you dont have it installed.
+- Install [Git](https://www.digitalocean.com/community/tutorials/how-to-contribute-to-open-source-getting-started-with-git), (optional) if you dont have it installed.
+- Install a Code Editor either Eclipse or VSCode, or even any other of your prefered choice.
+
+## Run the project
+
+#### Using VSCode
+
+1. run `npm install` to install project dependencies
+2. npm run `npm run start` for production mode
+3. npm run `npm run start:dev` for development mode
+4. Congratulations! You have successfully launched the Load Testing Bot.
+
+## To check if the API is up and running.
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/e5aedfc69394a3b82064#?env%5Bdev-bare-foot%5D=W3sia2V5IjoidXJsIiwidmFsdWUiOiIxMjcuMC4wLjE6MzAwMC9hcGkvdjEvIiwiZW5hYmxlZCI6dHJ1ZX0seyJrZXkiOiJ0b2tlbiIsInZhbHVlIjpudWxsLCJlbmFibGVkIjp0cnVlfV0=) or view full documentation of the API can be found [here](https://technites-bn-backend-staging.herokuapp.com/api/v1/api-docs/)
+
+Run the application with `npm run start` and open an API testing tool. We will use Postman for this case.
+
+Just call this endpoint: http://localhost:3000 using a GET method
+It will return a `Hello World!` message.
+
+For testing endpoints, we'll use this versioned endpoint
+
+```
+http://localhost:3000/api/v1/<endpoint>
 ```
 
-## Running the app
+## Test endpoints:
 
-```bash
-# development
-$ npm run start
+Authentication
+------------- |
 
-# watch mode
-$ npm run start:dev
+| Method | EndPoint     | Enable a user: |
+| ------ | ------------ | -------------- |
+| POST   | /auth/signup | Register       |
+| POST   | /auth/login  | Login          |
 
-# production mode
-$ npm run start:prod
-```
+User
+------------- |
 
-## Test
+| Method | EndPoint         | Enable a user:                                      |
+| ------ | ---------------- | --------------------------------------------------- |
+| POST   | /users/upload    | Upload an excel file of users                       |
+| GET    | /users           | Get a list of the uploaded file of users            |
+| POST   | /users           | Commit the data of the uploaded file of users to DB |
+| GET    | /users/committed | Get a list of the saved users to the DB             |
 
-```bash
-# unit tests
-$ npm run test
+## Contributing
 
-# e2e tests
-$ npm run test:e2e
+Please read [CONTRIBUTING.md](https://github.com/OLTRANZ/ussd_agent_irembo/blob/ft-handle-ussd-request/CONTRIBUTING.md)
 
-# test coverage
-$ npm run test:cov
-```
+## Authors
 
-## Support
+- **Amily Kassim** (https://github.com/amilykassim)
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+## Licence
 
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
+This software is published by `Amily Kassim` under the [MIT licence](http://opensource.org/licenses/MIT).

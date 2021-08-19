@@ -28,7 +28,7 @@ export class UserController {
     return res.status(200).json({ code: 200, data: users });
   }
 
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @Post('/upload')
   @UseInterceptors(FileInterceptor('file'))
   async uploadFileOfUsers(@UploadedFile(UserValidation) request: Express.Multer.File, @Res() res) {
@@ -42,7 +42,7 @@ export class UserController {
     return res.status(200).json({ code: 200, message: 'All data are valid' });
   }
 
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @Post('/users')
   async commitUsersToDB(@Res() res) {
     // Commit each record on the db

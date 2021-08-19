@@ -4,14 +4,14 @@ import { AuthService } from './auth/auth.service';
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
 import { LocalAuthGuard } from './auth/guards/local-auth.guard';
 
-@Controller('/api/v1')
+@Controller()
 export class AppController {
   constructor(
     private readonly appService: AppService,
     private readonly authService: AuthService,
   ) { }
 
-  @Get('')
+  @Get()
   getHello(@Request() req) {
     return this.appService.getHello()
   }
@@ -22,11 +22,5 @@ export class AppController {
     const { access_token } = await this.authService.login(req.user);
 
     return res.status(200).json({ code: 200, access_token });
-  }
-
-  @UseGuards(JwtAuthGuard)
-  @Get('profile')
-  getProfile(@Request() req) {
-    return req.user;
   }
 }
