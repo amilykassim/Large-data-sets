@@ -1,9 +1,12 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AppController } from './user.controller';
+import { UserController } from './user.controller';
 import { User } from './entities/user.entity';
-import { AppService } from './user.service';
 import { UserUtils } from './user.util';
+import { AppService } from 'src/app.service';
+import { UserService } from './user.service';
+import { JwtService } from '@nestjs/jwt';
+import { AuthModule } from 'src/auth/auth.module';
 
 
 @Module({
@@ -22,7 +25,8 @@ import { UserUtils } from './user.util';
       synchronize: true
     }),
   ],
-  controllers: [AppController],
-  providers: [AppService, UserUtils],
+  controllers: [UserController],
+  providers: [UserService, UserUtils],
+  exports: [UserService]
 })
 export class UserModule {}

@@ -1,16 +1,18 @@
-import { Controller, Get, Post, Res, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Controller, Get, Post, Res, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { AppService } from './user.service';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { UserService } from './user.service';
 import { UserValidation } from './user.validation';
 
 @Controller('/api/v1')
-export class AppController {
+export class UserController {
   private validatedUsers = [];
 
   constructor(
-    private readonly appService: AppService,
+    private readonly userService: UserService,
   ) { }
 
+  @UseGuards(JwtAuthGuard)
   @Get('/users')
   async getUncommittedUsers(@Res() res) {
     const users = await this.validatedUsers;
@@ -18,13 +20,15 @@ export class AppController {
     return res.status(200).json({ code: 200, data: users });
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get('/users/committed')
   async getCommittedUsers(@Res() res) {
-    const users = await this.appService.findAll();
+    const users = await this.userService.findAll();
 
     return res.status(200).json({ code: 200, data: users });
   }
 
+  @UseGuards(JwtAuthGuard)
   @Post('/upload')
   @UseInterceptors(FileInterceptor('file'))
   async uploadFileOfUsers(@UploadedFile(UserValidation) request: Express.Multer.File, @Res() res) {
@@ -38,12 +42,13 @@ export class AppController {
     return res.status(200).json({ code: 200, message: 'All data are valid' });
   }
 
+  @UseGuards(JwtAuthGuard)
   @Post('/users')
   async commitUsersToDB(@Res() res) {
     // Commit each record on the db
     this.validatedUsers.forEach(async (user) => {
       try {
-        await this.appService.createUser(user);
+        await this.userService.createUser(user);
       } catch (error) {
         console.error(`An error occured while saving this ${JSON.stringify(user)} to DB, here is the reason: `, error);
       }
