@@ -29,9 +29,9 @@
 #### Using VSCode
 
 1. run `npm install` to install project dependencies
-2. npm run `npm run start` for production mode
-3. npm run `npm run start:dev` for development mode
-4. Congratulations! You have successfully launched the Load Testing Bot.
+2. run `npm run start` for production mode
+3. run `npm run start:dev` for development mode
+4. Congratulations! You have successfully launched the RSSB CHALLENGE API.
 
 ## To check if the API is up and running.
 Run the application with `npm run start` and open an API testing tool. We will use Postman for this case.

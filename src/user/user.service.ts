@@ -18,6 +18,9 @@ export class UserService {
     const user = await this.findByUsername(obj.name);
     if (user) return user;
 
+    // if there is a validation error, then don't commit to DB
+    if(obj['errors']) return;
+
     // Otherwise, instantiate a user object
     const { nid, name, phone, gender, email, password } = obj;
     const userObject = { nid, name, phone, gender, email, password };
