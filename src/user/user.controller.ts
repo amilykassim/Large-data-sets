@@ -2,6 +2,7 @@ import { Controller, Get, Post, Res, UploadedFile, UseGuards, UseInterceptors } 
 import { FileInterceptor } from '@nestjs/platform-express';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { UserService } from './user.service';
+import { UserUtils } from './user.util';
 import { UserValidation } from './validations/user.validation';
 
 @Controller('/api/v1')
@@ -10,6 +11,7 @@ export class UserController {
 
   constructor(
     private readonly userService: UserService,
+    private readonly userUtil: UserUtils,
   ) { }
 
   @UseGuards(JwtAuthGuard)
@@ -26,7 +28,7 @@ export class UserController {
     const results = await this.userService.findAll();
 
     // remove password
-    const users = results.map(({ password, ...users}) => users);
+    const users = results.map(({ password, ...users }) => users);
 
     return res.status(200).json({ code: 200, data: users });
   }
@@ -48,14 +50,18 @@ export class UserController {
   @UseGuards(JwtAuthGuard)
   @Post('/users')
   async commitUsersToDB(@Res() res) {
-    // Commit each record on the db
-    this.validatedUsers.forEach(async (user) => {
+    // divide large data sets into smaller chuncks
+    const result = this.userUtil.divideDataSetsIntoChunks(this.validatedUsers, 500);
+
+    // Commit records to db
+    for (let i = 0; i < result.length; i++) {
       try {
-        await this.userService.createUser(user);
+        await this.userService.saveData(result[i]);
       } catch (error) {
-        console.error(`An error occured while saving this ${JSON.stringify(user)} to DB, here is the reason: `, error);
+        console.log('An error occurred while saving the users to the DB, here is the error: ', error)
+        return res.status(200).json({ code: 500, message: 'Oops, something went wrong on our side, please try again later!' });
       }
-    });
+    }
 
     return res.status(200).json({ code: 200, message: 'Saved users successfully!' });
   }

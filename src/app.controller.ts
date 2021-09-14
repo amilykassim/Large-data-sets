@@ -34,7 +34,7 @@ export class AppController {
     // check if username is unique
     const data = request.value;
     let userFound = await this.userService.findByUsername(data.name);
-    if (userFound) return res.status(200).json({ code: 400, message: 'That username is already taken, try something else' });
+    if (userFound) return res.status(200).json({ code: 400, message: 'That name is already taken, try something else' });
 
     // create user
     const createdUser = await this.userService.createUser(data);
