@@ -13,27 +13,24 @@ export class UserService {
     private userUtil: UserUtils,
   ) { }
 
-  async createUser(obj: UserDTO): Promise<User> {
-    // Check if a user already exists
-    const user = await this.findByUsername(obj.name);
-    if (user) return user;
-
-    // if there is a validation error, then don't commit to DB
-    if(obj['errors']) return;
-
-    // Otherwise, instantiate a user object
-    const { nid, name, phone, gender, email, password } = obj;
-    const userObject = { nid, name, phone, gender, email, password };
-
+  async createUser(user: UserDTO): Promise<User> {
     // hash password if provided available
-    if(password) {
-      const hashedPassword = await this.userUtil.hashPassword(password);
-      userObject.password = hashedPassword;
+    if(user.password) {
+      const hashedPassword = await this.userUtil.hashPassword(user.password);
+      user.password = hashedPassword;
     }
 
     // save user in the db
-    const entity = await this.usersRepository.create(userObject);
+    const entity = await this.usersRepository.create(user);
     return await this.usersRepository.save(entity);
+  }
+
+  async saveData(users: any) {
+    // remove objects with errors
+    const validDataSet = users.filter((user) => user['errors'] == null);
+
+    // commit to DB
+    return this.usersRepository.createQueryBuilder().insert().into(User).values(validDataSet).execute();
   }
 
   async findByUsername(name: string) {
