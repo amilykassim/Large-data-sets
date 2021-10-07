@@ -40,10 +40,10 @@ export class UserController {
     // add validated results to the validated users array
     this.validatedUsers = request['users'];
 
-    // if data is invalid
-    if (!request['isDataValid']) return res.status(200).json({ code: 200, message: 'There are invalid data' });
+    // if some data are invalid, return a respective message
+    if (!request['isDataValid']) return res.status(200).json({ code: 200, message: 'Uploaded the users successfully, but there are some invalid data' });
 
-    // if the data is valid
+    // if it reaches here, then all the data are valid
     return res.status(200).json({ code: 200, message: 'All data are valid' });
   }
 
