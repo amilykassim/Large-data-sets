@@ -23,7 +23,7 @@ export class AppController {
   async login(@Request() req, @Res() res) {
     const { access_token } = await this.authService.login(req.user);
 
-    return res.status(200).json({ code: 200, access_token });
+    return res.status(200).json({ code: 200, access_token }); 
   }
 
   @Post('/auth/register')
