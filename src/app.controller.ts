@@ -16,7 +16,7 @@ export class AppController {
   @Get()
   getHello(@Request() req) {
     return this.appService.getHello()
-  }
+  } 
 
   @UseGuards(LocalAuthGuard)
   @Post('/auth/login')
